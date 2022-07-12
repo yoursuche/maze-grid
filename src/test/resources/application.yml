@@ -1,0 +1,54 @@
+server:
+  port: 9990
+  use-forward-headers: true
+  forward-headers-strategy: NATIVE
+  servlet:
+    context-path: /  
+
+spring:
+  main:
+      banner-mode: "off"
+  profiles: default
+  application:
+    name: mazeservice
+  datasource:
+    url: jdbc:postgresql://localhost:5432/mvpmaze
+    username: postgres
+    password: nippon@1
+    driver-class-name: org.postgresql.Driver
+    tomcat:
+      test-while-idle: true
+      validation-query: SELECT 1
+    initialization-mode: never
+    platform: postgres
+  jpa:
+    properties:
+      show-sql: false
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: public
+    hibernate:
+      naming:
+        implicit: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl   
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+      ddl-auto: update
+
+
+jwtsigining-key: secretpassword
+jwtExpirationMs: 900000
+  
+#SLF4J
+logging.file: /log/mvpmaze/mazesevice.log
+logging:
+  file: 
+    max-history: 2
+    max-size: 5MB  
+  level:
+    ROOT: ERROR
+    org.springframework: ERROR
+    org.hibernate: ERROR
+    co.mvpfactory.bizservice: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level  %class{36}.%M %L  - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+      
