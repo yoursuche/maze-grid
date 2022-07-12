@@ -42,17 +42,17 @@ jwtsigining-key: secretpassword
 jwtExpirationMs: 900000
   
 #SLF4J
-#logging.file: /log/mvpmaze/mazesevice.log
-#logging:
-#  file: 
-#    max-history: 2
-#    max-size: 5MB  
-#  level:
-#    ROOT: ERROR
-#    org.springframework: ERROR
-#    org.hibernate: ERROR
-#    co.mvpfactory.bizservice: DEBUG
-#  pattern:
-#    console: "%d{HH:mm:ss.SSS} [%thread] %-5level  %class{36}.%M %L  - %msg%n"
-#    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+logging.file: /log/mvpmaze/mazesevice.log
+logging:
+  file: 
+    max-history: 2
+    max-size: 5MB  
+  level:
+    ROOT: ERROR
+    org.springframework: ERROR
+    org.hibernate: ERROR
+    co.mvpfactory.bizservice: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level  %class{36}.%M %L  - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
       
