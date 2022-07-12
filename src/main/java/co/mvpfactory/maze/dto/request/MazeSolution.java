@@ -13,4 +13,8 @@ public class MazeSolution implements Serializable {
 
     ArrayList<String> path;
 
+    public MazeSolution(ArrayList<String> path) {
+        this.path = path;
+    }
+
 }

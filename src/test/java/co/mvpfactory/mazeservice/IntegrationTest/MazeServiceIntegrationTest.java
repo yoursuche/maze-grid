@@ -81,7 +81,7 @@ public class MazeServiceIntegrationTest {
     }
 
     //@Test
-   // @Order(1)
+    // @Order(1)
     public void user_maze_success_creation() throws Exception {
         HttpHeaders headers = new HttpHeaders();
         String token = obtainAccessToken("Uche", "password");
@@ -135,14 +135,25 @@ public class MazeServiceIntegrationTest {
 
     }
 
-    
-    //@Test
-    //@Order(3)
-    public void user_maze_solution() throws Exception {
+   // @Test
+   // @Order(3)
+    public void user_maze_solution_min() throws Exception {
         HttpHeaders headers = new HttpHeaders();
         String token = obtainAccessToken("Uche", "password");
         headers.add("Authorization", "Bearer " + token);
         mockMvc.perform(get("/maze/4/solution?step=min").headers(headers)
+                .contentType(MediaType.APPLICATION_JSON)).andDo(print())
+                .andExpect(status().isOk());
+
+    }
+
+    @Test
+    @Order(4)
+    public void user_maze_solution_max() throws Exception {
+        HttpHeaders headers = new HttpHeaders();
+        String token = obtainAccessToken("Uche", "password");
+        headers.add("Authorization", "Bearer " + token);
+        mockMvc.perform(get("/maze/4/solution?step=max").headers(headers)
                 .contentType(MediaType.APPLICATION_JSON)).andDo(print())
                 .andExpect(status().isOk());
 

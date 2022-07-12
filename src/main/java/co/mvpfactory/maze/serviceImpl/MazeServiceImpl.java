@@ -125,11 +125,11 @@ public class MazeServiceImpl implements MazeService {
 
     @Override
     public MazeSolution getMazeSolution(long mazeId, String username, String stepType) {
-        MazeSolution solution =null;
+        MazeSolution solution = null;
         try {
             StepType actualStepType = StepType.fromString(stepType);
-            if(null==actualStepType){
-              throw new BadRequestException("Invalid step parameter value passed.");
+            if (null == actualStepType) {
+                throw new BadRequestException("Invalid step parameter value passed.");
             }
 
             Optional<AppUser> optionalDbUser = userRepository.findByUsernameIgnoreCase(username);
@@ -148,14 +148,20 @@ public class MazeServiceImpl implements MazeService {
             String[] walls = new String[dbWalls.size()];
             walls = dbWalls.toArray(walls);
             MazeGridProcessor processor = new MazeGridProcessor(walls, maze.getGridSize(), maze.getEntrance());
-             ArrayList<String> minimumStep=processor.getMazeMinumumStep();
-            if (minimumStep.size() < 2) {
-                throw new BadRequestException("Maze Grid has no possible exit path/point");
-            }
-            Collections.reverse(minimumStep);
-            solution = new MazeSolution();
-            solution.setPath(minimumStep);
+            ArrayList<String> step = null;
+            if (actualStepType.equals(StepType.min)) {
+                step = processor.getMazeMinumumStep();
+                if (step==null || step.size() < 2) {
+                    throw new BadRequestException("Maze Grid has no possible exit path/point");
+                }
 
+            } else {
+                step = processor.getMazeMaximumStep();
+                if (step==null || step.size() < 2) {
+                    throw new BadRequestException("Maze Grid has no possible exit path/point");
+                }
+            }
+            solution = new MazeSolution(step);
         } catch (GenericMazeServiceException ex) {
             log.error("Error retrieving maze  " + ex.getMessage());
             throw new GenericMazeServiceException(ex.getMessage());

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package co.mvpfactory.maze.mazeprocessor;
 
 /**
@@ -36,6 +32,26 @@ public class Coordinate {
 
     public Coordinate getParent() {
         return parent;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + x + "," + y + ")";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if ((obj == null) || (obj.getClass() != this.getClass())) {
+            return false;
+        }
+        Coordinate point = (Coordinate) obj;
+        if (y == point.y && x == point.x) {
+            return true;
+        }
+        return false;
     }
 
 }
