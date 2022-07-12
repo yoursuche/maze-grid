@@ -136,8 +136,8 @@ public class MazeServiceIntegrationTest {
     }
 
     
-    @Test
-    @Order(3)
+    //@Test
+    //@Order(3)
     public void user_maze_solution() throws Exception {
         HttpHeaders headers = new HttpHeaders();
         String token = obtainAccessToken("Uche", "password");
