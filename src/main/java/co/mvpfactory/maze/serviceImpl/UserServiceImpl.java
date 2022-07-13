@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     
     @Override
     public NewUserResp createUser(NewUserReq req) {
-        NewUserResp resp = null;
+        NewUserResp resp = new NewUserResp();
         try {
             
             Boolean userNameExist = userRepository.existsByUsernameIgnoreCase(req.getUsername());
