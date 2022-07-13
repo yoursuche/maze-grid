@@ -6,6 +6,7 @@
 package co.mvpfactory.maze.serviceImpl;
 
 import co.mvpfactory.maze.dto.NewUserReq;
+import co.mvpfactory.maze.dto.NewUserResp;
 import co.mvpfactory.maze.exception.BadRequestException;
 import co.mvpfactory.maze.exception.GenericMazeServiceException;
 import co.mvpfactory.maze.repository.AppUserRepository;
@@ -19,38 +20,40 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
-
+    
     AppUserRepository userRepository;
     PasswordEncoder passwordEncoder;
-
+    
     @Autowired
     public UserServiceImpl(AppUserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
-
+    
     @Override
-    public NewUserReq createUser(NewUserReq req) {
-        NewUserReq resp = null;
+    public NewUserResp createUser(NewUserReq req) {
+        NewUserResp resp = null;
         try {
-
+            
             Boolean userNameExist = userRepository.existsByUsernameIgnoreCase(req.getUsername());
             if (userNameExist) {
                 throw new BadRequestException("Username already in use");
             }
-
+            
             AppUser appUser = new AppUser();
             appUser.setPassword(passwordEncoder.encode(req.getPassword()));
             appUser.setUsername(req.getUsername());
             appUser = userRepository.save(appUser);
-            req.setUserId(appUser.getId());
-            resp = req;
+            resp.setUserId(appUser.getId());
+            resp.setUsername(req.getUsername());
+            resp.setPassword(req.getPassword());
+            
         } catch (GenericMazeServiceException ex) {
             log.error("Error creating user  " + ex.getMessage());
             throw new GenericMazeServiceException("Internal server error");
         }
         return resp;
-
+        
     }
-
+    
 }
