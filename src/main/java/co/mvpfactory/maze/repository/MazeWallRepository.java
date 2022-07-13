@@ -9,6 +9,4 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface MazeWallRepository extends JpaRepository<MazeWall, Long> {
 
-   
-
 }

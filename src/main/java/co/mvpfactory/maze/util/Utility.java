@@ -7,6 +7,8 @@ package co.mvpfactory.maze.util;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import lombok.extern.slf4j.Slf4j;
 
@@ -54,14 +56,13 @@ public class Utility {
         }
     }
 
-    public static boolean gridHasValue(String[][] grid, String value) {
+    public static boolean gridHasValue(String[][] grid, String element) {
         boolean result = false;
+        String[] elementArray = {element};
         for (int row = 0; row < grid.length; row++) {
             for (int col = 0; col < grid[row].length; col++) {
-                if (grid[row][col].equals(value));
-                {
-                    result = true;
-                    break;
+                if (Arrays.stream(elementArray).anyMatch(grid[row][col]::equals)) {
+                    return true;
                 }
             }
 
@@ -73,8 +74,8 @@ public class Utility {
         boolean result = true;
         for (String wall : walls) {
             if (!gridHasValue(grid, wall)) {
-                result = false;
-                break;
+                return false;
+
             }
         }
         return result;

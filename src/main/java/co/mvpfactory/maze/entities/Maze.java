@@ -17,7 +17,7 @@ public class Maze extends BaseEntity {
     @Column(name = "ENTRANCE", length = 5)
     private String entrance;
 
-    @Column(name = "GRID_SIZE", length = 5)
+    @Column(name = "GRID_SIZE", length = 15)
     private String gridSize;
 
     @ManyToOne(optional = false)
