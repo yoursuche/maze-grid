@@ -2,6 +2,7 @@
 package co.mvpfactory.maze.service;
 
 import co.mvpfactory.maze.dto.NewUserReq;
+import co.mvpfactory.maze.dto.NewUserResp;
 
 /**
  *
@@ -9,7 +10,7 @@ import co.mvpfactory.maze.dto.NewUserReq;
  */
 public interface UserService {
 
-    NewUserReq createUser(NewUserReq req);
+    NewUserResp createUser(NewUserReq req);
 
   
 

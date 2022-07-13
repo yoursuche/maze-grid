@@ -1,6 +1,7 @@
 package co.mvpfactory.maze.resource;
 
 import co.mvpfactory.maze.dto.NewUserReq;
+import co.mvpfactory.maze.dto.NewUserResp;
 import co.mvpfactory.maze.service.UserService;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -41,9 +42,9 @@ public class UserController {
 
         }
 
-        NewUserReq user = userService.createUser(userRequest);
+        NewUserResp user = userService.createUser(userRequest);
 
-        return new ResponseEntity<NewUserReq>(user, new HttpHeaders(), HttpStatus.OK);
+        return new ResponseEntity<NewUserResp>(user, new HttpHeaders(), HttpStatus.OK);
 
     }
 

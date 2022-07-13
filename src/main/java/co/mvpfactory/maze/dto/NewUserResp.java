@@ -14,7 +14,9 @@ import lombok.Data;
  * @author Uchechukwu Onuoha
  */
 @Data
-public class NewUserReq implements Serializable {
+public class NewUserResp implements Serializable {
+
+    private Long userId;
 
     @NotBlank(message = "Username cannot be empty")
     private String username;
