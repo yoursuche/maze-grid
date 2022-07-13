@@ -1,6 +1,7 @@
 package co.mvpfactory.maze.service;
 
 import co.mvpfactory.maze.dto.request.MazeRequest;
+import co.mvpfactory.maze.dto.request.MazeResp;
 import co.mvpfactory.maze.dto.request.MazeSolution;
 import java.util.ArrayList;
 
@@ -10,9 +11,9 @@ import java.util.ArrayList;
  */
 public interface MazeService {
 
-    MazeRequest createUserMaze(MazeRequest req, String username);
+    MazeResp createUserMaze(MazeRequest req, String username);
 
-    ArrayList<MazeRequest> getMazeUserList(String username);
+    ArrayList<MazeResp> getMazeUserList(String username);
 
     MazeSolution getMazeSolution(long mazeId, String username, String stepType);
 

@@ -13,9 +13,7 @@ import lombok.Data;
  * @author UchechukwuOnuoha
  */
 @Data
-public class MazeRequest implements Serializable{
-
-    Long mazeId;
+public class MazeRequest implements Serializable {
 
     @NotBlank
     @MazePointValidation
