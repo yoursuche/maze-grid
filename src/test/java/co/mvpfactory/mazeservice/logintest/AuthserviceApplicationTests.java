@@ -1,4 +1,4 @@
-package co.mvpfactory.mazeservice.AuthTest;
+package co.mvpfactory.mazeservice.logintest;
 
 import co.mvpfactory.maze.MazeService;
 import co.mvpfactory.maze.dto.request.LoginRequest;
@@ -39,10 +39,6 @@ public class AuthserviceApplicationTests {
                 .addFilter(springSecurityFilterChain).build();
     }
 
-    @Test
-    public void init() {
-    }
-
     private String obtainAccessToken(String username, String password) throws Exception {
         String token = null;
         ResultActions result = null;
@@ -71,8 +67,8 @@ public class AuthserviceApplicationTests {
         return token;
     }
 
-   // @Test
-   // @Order(1)
+    @Test
+    @Order(1)
     public void login_success() throws Exception {
         final String accessToken = obtainAccessToken("Uche", "password");
         System.out.println("token:" + accessToken);
@@ -80,8 +76,8 @@ public class AuthserviceApplicationTests {
 
     }
 
-   // @Test
-   // @Order(2)
+    @Test
+    @Order(2)
     public void login_failure() throws Exception {
         final String accessToken = obtainAccessToken("fakeuser@fakeemail.com", "password");
         Assert.assertNull(accessToken);

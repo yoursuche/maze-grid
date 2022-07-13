@@ -151,13 +151,14 @@ public class MazeServiceImpl implements MazeService {
             ArrayList<String> step = null;
             if (actualStepType.equals(StepType.min)) {
                 step = processor.getMazeMinumumStep();
-                if (step==null || step.size() < 2) {
+                Collections.reverse(step);
+                if (step == null || step.size() < 2) {
                     throw new BadRequestException("Maze Grid has no possible exit path/point");
                 }
 
             } else {
                 step = processor.getMazeMaximumStep();
-                if (step==null || step.size() < 2) {
+                if (step == null || step.size() < 2) {
                     throw new BadRequestException("Maze Grid has no possible exit path/point");
                 }
             }

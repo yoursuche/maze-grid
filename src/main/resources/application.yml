@@ -12,13 +12,13 @@ spring:
   application:
     name: mazeservice
 #  datasource:
-#    url: jdbc:postgresql://localhost:5432/mvpmaze
-#    username: postgres
-#    password: nippon@1
+#    url: jdbc:postgresql://ec2-52-48-159-67.eu-west-1.compute.amazonaws.com:5432/d1at82mt81h2u7
+#    username: bhrdvjgtblomir
+#    password: 03a39973f62114c0a6dc84a754e30423467c70539843d31bf8dd644f36f6df35  
   datasource:
-    url: jdbc:postgresql://ec2-52-48-159-67.eu-west-1.compute.amazonaws.com:5432/d1at82mt81h2u7
-    username: bhrdvjgtblomir
-    password: 03a39973f62114c0a6dc84a754e30423467c70539843d31bf8dd644f36f6df35
+    url: jdbc:postgresql://localhost:5432/mvpmaze
+    username: postgres
+    password: nippon@1
     driver-class-name: org.postgresql.Driver
     tomcat:
       test-while-idle: true
@@ -51,7 +51,7 @@ logging:
     ROOT: ERROR
     org.springframework: ERROR
     org.hibernate: ERROR
-    co.mvpfactory.bizservice: DEBUG
+    co.mvpfactory.maze: DEBUG
   pattern:
     console: "%d{HH:mm:ss.SSS} [%thread] %-5level  %class{36}.%M %L  - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"

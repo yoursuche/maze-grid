@@ -1,7 +1,8 @@
-package co.mvpfactory.mazeservice.IntegrationTest;
+package co.mvpfactory.mazeservice.appusercreationtest;
 
 import co.mvpfactory.maze.MazeService;
 import co.mvpfactory.maze.dto.NewUserReq;
+import co.mvpfactory.maze.repository.AppUserRepository;
 import co.mvpfactory.maze.util.Utility;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,7 +30,7 @@ import org.springframework.web.context.WebApplicationContext;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {MazeService.class})
-public class UserServiceIntegrationTest {
+public class AppUserServiceIntegrationTest {
 
     @Autowired
     private WebApplicationContext wac;
@@ -37,27 +38,30 @@ public class UserServiceIntegrationTest {
     @Autowired
     private FilterChainProxy springSecurityFilterChain;
 
+    @Autowired
+    AppUserRepository userRepo;
+
     private MockMvc mockMvc;
+    String testUser = "Uche";
+    boolean testUserExit = false;
 
     @Before
     public void setup() throws JsonProcessingException {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac)
                 .addFilter(springSecurityFilterChain).build();
+        testUserExit = userRepo.existsByUsernameIgnoreCase(testUser);
 
     }
-    
+
     @Test
-    public void init() {
-    }
-
-    //@Test
-    //@Order(1)
+    @Order(1)
     public void user_successful_creation() throws Exception {
+        if (testUserExit) {
+            testUser = Utility.requestId(testUser);
+        }
         NewUserReq newUserReq = new NewUserReq();
-        String username = "Uche" + Utility.requestId("unique");
-        newUserReq.setUsername(username);
+        newUserReq.setUsername(testUser);
         newUserReq.setPassword("password");
-
         ObjectMapper mapper = new ObjectMapper();
         mockMvc.perform(post("/user")
                 .content(mapper.writeValueAsString(newUserReq))
@@ -65,7 +69,7 @@ public class UserServiceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("userId").isNumber())
                 .andExpect(jsonPath("password", is("password")))
-                .andExpect(jsonPath("username", is(username)));
+                .andExpect(jsonPath("username", is(testUser)));
     }
 
 }
