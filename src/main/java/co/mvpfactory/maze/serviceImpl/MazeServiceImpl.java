@@ -6,6 +6,7 @@
 package co.mvpfactory.maze.serviceImpl;
 
 import co.mvpfactory.maze.dto.request.MazeRequest;
+import co.mvpfactory.maze.dto.request.MazeResp;
 import co.mvpfactory.maze.dto.request.MazeSolution;
 import co.mvpfactory.maze.entities.AppUser;
 import co.mvpfactory.maze.exception.GenericMazeServiceException;
@@ -34,21 +35,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Slf4j
 public class MazeServiceImpl implements MazeService {
-
+    
     AppUserRepository userRepository;
     MazeRepository mazeRepository;
-
+    
     @Autowired
     public MazeServiceImpl(AppUserRepository userRepository, MazeRepository mazeRepository) {
         this.userRepository = userRepository;
         this.mazeRepository = mazeRepository;
-
+        
     }
-
+    
     @Override
     @Transactional
-    public MazeRequest createUserMaze(MazeRequest req, String username) {
-        MazeRequest resp = null;
+    public MazeResp createUserMaze(MazeRequest req, String username) {
+        MazeResp resp = new MazeResp();
         try {
             Optional<AppUser> optionalDbUser = userRepository.findByUsernameIgnoreCase(username);
             if (!optionalDbUser.isPresent()) {
@@ -66,7 +67,7 @@ public class MazeServiceImpl implements MazeService {
             if (!isValidWall) {
                 throw new BadRequestException("Walls contain an invalid element");
             }
-
+            
             Maze maze = new Maze();
             maze.setEntrance(req.getEntrance());
             maze.setGridSize(req.getGridSize());
@@ -80,19 +81,21 @@ public class MazeServiceImpl implements MazeService {
             }
             maze.setMazeWalls(mazeWalls);
             Maze dbMaze = mazeRepository.saveAndFlush(maze);
-            req.setMazeId(dbMaze.getId());
-            resp = req;
+            resp.setMazeId(dbMaze.getId());
+            resp.setGridSize(req.getGridSize());
+            resp.setEntrance(req.getEntrance());
+            resp.setWalls(req.getWalls());
         } catch (GenericMazeServiceException ex) {
             log.error("Error creating user  " + ex.getMessage());
             throw new GenericMazeServiceException("Internal server error");
         }
         return resp;
-
+        
     }
-
+    
     @Override
-    public ArrayList<MazeRequest> getMazeUserList(String username) {
-        ArrayList<MazeRequest> resp = new ArrayList<>();
+    public ArrayList<MazeResp> getMazeUserList(String username) {
+        ArrayList<MazeResp> resp = new ArrayList<>();
         try {
             Optional<AppUser> optionalDbUser = userRepository.findByUsernameIgnoreCase(username);
             if (!optionalDbUser.isPresent()) {
@@ -103,26 +106,26 @@ public class MazeServiceImpl implements MazeService {
                 throw new RecordNotFoundException("No Maze record found for user ==> " + username);
             }
             for (Maze maze : mazeList) {
-                MazeRequest maseReq = new MazeRequest();
-                maseReq.setEntrance(maze.getEntrance());
-                maseReq.setGridSize(maze.getGridSize());
-                maseReq.setMazeId(maze.getId());
+                MazeResp maseResp = new MazeResp();
+                maseResp.setEntrance(maze.getEntrance());
+                maseResp.setGridSize(maze.getGridSize());
+                maseResp.setMazeId(maze.getId());
                 ArrayList<String> dbWalls = new ArrayList<>();
                 for (MazeWall dbMazeWall : maze.getMazeWalls()) {
                     dbWalls.add(dbMazeWall.getWall());
                 }
-                maseReq.setWalls(dbWalls);
-                resp.add(maseReq);
+                maseResp.setWalls(dbWalls);
+                resp.add(maseResp);
             }
-
+            
         } catch (GenericMazeServiceException ex) {
             log.error("Error retrieving maze  " + ex.getMessage());
             throw new GenericMazeServiceException("Internal server error");
         }
         return resp;
-
+        
     }
-
+    
     @Override
     public MazeSolution getMazeSolution(long mazeId, String username, String stepType) {
         MazeSolution solution = null;
@@ -131,7 +134,7 @@ public class MazeServiceImpl implements MazeService {
             if (null == actualStepType) {
                 throw new BadRequestException("Invalid step parameter value passed.");
             }
-
+            
             Optional<AppUser> optionalDbUser = userRepository.findByUsernameIgnoreCase(username);
             if (!optionalDbUser.isPresent()) {
                 throw new RecordNotFoundException("User record not found.");
@@ -155,7 +158,7 @@ public class MazeServiceImpl implements MazeService {
                 if (step == null || step.size() < 2) {
                     throw new BadRequestException("Maze Grid has no possible exit path/point");
                 }
-
+                
             } else {
                 step = processor.getMazeMaximumStep();
                 if (step == null || step.size() < 2) {
@@ -168,7 +171,7 @@ public class MazeServiceImpl implements MazeService {
             throw new GenericMazeServiceException(ex.getMessage());
         }
         return solution;
-
+        
     }
-
+    
 }

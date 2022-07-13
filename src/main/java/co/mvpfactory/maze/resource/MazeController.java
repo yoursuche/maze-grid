@@ -1,6 +1,7 @@
 package co.mvpfactory.maze.resource;
 
 import co.mvpfactory.maze.dto.request.MazeRequest;
+import co.mvpfactory.maze.dto.request.MazeResp;
 import co.mvpfactory.maze.dto.request.MazeSolution;
 import co.mvpfactory.maze.service.MazeService;
 import io.swagger.annotations.Api;
@@ -50,15 +51,15 @@ public class MazeController {
                     .body(sb.toString());
 
         }
-        MazeRequest maze = mazeService.createUserMaze(mazeRequest, principal.getName());
-        return new ResponseEntity<MazeRequest>(maze, new HttpHeaders(), HttpStatus.OK);
+        MazeResp maze = mazeService.createUserMaze(mazeRequest, principal.getName());
+        return new ResponseEntity<MazeResp>(maze, new HttpHeaders(), HttpStatus.OK);
     }
 
     @GetMapping
     @ApiOperation(value = "Get User maze")
     public ResponseEntity<?> getMaze(Principal principal) {
-        ArrayList<MazeRequest> mazeList = mazeService.getMazeUserList(principal.getName());
-        return new ResponseEntity<ArrayList<MazeRequest>>(mazeList, new HttpHeaders(), HttpStatus.OK);
+        ArrayList<MazeResp> mazeList = mazeService.getMazeUserList(principal.getName());
+        return new ResponseEntity<ArrayList<MazeResp>>(mazeList, new HttpHeaders(), HttpStatus.OK);
     }
 
     @GetMapping("/{mazeId}/solution")
